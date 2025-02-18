@@ -1,0 +1,98 @@
+/* Sidebar.css */
+
+/* ------------------- */
+/* 選單按鈕 (左上)      */
+/* ------------------- */
+.menu-icon {
+  position: fixed; /*  調整為 fixed 定位，確保選單按鈕在螢幕左上方 */
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 1001;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-icon i {
+  font-size: 1.5rem;
+}
+
+/* ------------------- */
+/* 側邊欄               */
+/* ------------------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  max-height: 100vh;
+  width: 250px;
+  background-color: #f0f0f0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 80px 20px 60px 20px; /* 預留上方(給menu-icon)和下方(給登出按鈕) */
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  padding-top: 30px;
+}
+
+.menu-item {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+/* 登出按鈕固定在側邊欄底部 */
+.logout-button {
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: auto;
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  margin: 0 20px;
+  box-sizing: border-box;
+}
+
+.logout-button:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.logout-button i.bi {
+  margin-right: 5px;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+/* 側邊欄打開時，主內容區往右移 */
+.sidebar.open + .home-container {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease-in-out;
+}

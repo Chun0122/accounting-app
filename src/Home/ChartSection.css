@@ -1,0 +1,62 @@
+/* ------------------- */
+/* 收支占比區塊         */
+/* ------------------- */
+.chart-section {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  position: relative;
+  /* 外框線 + 邊框圓角 + 陰影 (懸浮效果) */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+/* 左上角標題 (由原本 right: 10px; 改為 left: 20px;) */
+.chart-title {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  margin: 0;
+}
+
+/* 圓環圖 (純 CSS 寫死 50%:50% 的例子) */
+.circle-chart {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto; /* 置中 */
+  border-radius: 50%;
+  background: conic-gradient(#28a745 50%, #dc3545 0);
+  position: relative;
+}
+
+/* 圓心內部白色圓，可顯示數字或其他資訊 */
+.chart-center {
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 圓環圖下方的「收入 / 支出」 */
+.income-expense-labels {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.income-label {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.expense-label {
+  color: #dc3545;
+  font-weight: bold;
+}

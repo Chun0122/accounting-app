@@ -1,0 +1,84 @@
+/* RegistrationScreen.css */
+
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* 讓容器至少佔據整個 viewport 高度 */
+  background-color: #f0f2f5; /*  與登入畫面背景色保持一致 */
+}
+
+.registration-form-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /*  與登入畫面陰影效果保持一致 */
+  width: 400px; /*  與登入表單寬度保持一致 */
+}
+
+.registration-form-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333; /*  與登入畫面標題顏色保持一致 */
+}
+
+.registration-form .input-group {
+  margin-bottom: 20px;
+}
+
+.registration-form .input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555; /*  與登入畫面標籤文字顏色保持一致 */
+  font-weight: bold; /*  與登入畫面標籤文字加粗效果保持一致 */
+  text-align: left; /* 確保標籤靠左對齊 */
+}
+
+.registration-form .input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.registration-form .registration-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff; /*  與登入按鈕顏色保持一致 */
+  color: white; /*  與登入按鈕文字顏色保持一致 */
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /*  與登入按鈕 hover 效果保持一致 */
+}
+
+.registration-form .registration-button:hover {
+  background-color: #0056b3; /*  與登入按鈕 hover 顏色保持一致 */
+}
+
+.registration-form .button-group {
+  display: flex; /* 啟用 Flexbox 佈局 */
+  justify-content: flex-end; /* 將按鈕靠右對齊 */
+  margin-top: 15px; /* 與註冊按鈕之間增加一些間距 */
+}
+
+.registration-form .back-to-login-button {
+  padding: 12px 24px; /* 調整內距，使其與註冊按鈕視覺上更接近 */
+  border: 1px solid #ccc; /* 加入邊框，與註冊按鈕視覺上區分 */
+  border-radius: 4px;
+  background-color: transparent; /* 背景色設定為透明，與註冊按鈕區分 */
+  color: #007bff; /* 文字顏色與註冊按鈕的 hover 效果顏色一致，突出可點擊 */
+  font-size: 16px; /* 文字大小調整，使其與註冊按鈕更協調 */
+  cursor: pointer;
+  text-decoration: none; /* 移除 Link 元件預設的底線 */
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease; /* 加入過渡效果 */
+}
+
+.registration-form .back-to-login-button:hover {
+  background-color: #e0f7fa; /* Hover 時的背景色，可以調整 */
+  color: #0056b3; /* Hover 時的文字顏色，與註冊按鈕的 hover 效果顏色一致 */
+  border-color: #0056b3; /* Hover 時的邊框顏色，與 hover 背景色協調 */
+}

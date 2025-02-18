@@ -1,0 +1,30 @@
+/* Modal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色遮罩 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 確保 Modal 在最上層 */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%; /* 可調整 Modal 寬度 */
+  max-width: 600px; /* 最大寬度限制 */
+
+  /*  新增以下樣式，讓 Modal 內容區塊啟用垂直捲動  */
+  overflow-y: auto; /*  當內容超出高度時，顯示垂直捲動條 */
+  max-height: 80vh; /*  設定 Modal 內容區塊最大高度為螢幕高度的 80%，避免 Modal 過高 */
+}
+
+/*  鎖定 body 捲動條 (避免 Modal 開啟時，背景可以捲動) */
+body.modal-open {
+  overflow: hidden;
+}

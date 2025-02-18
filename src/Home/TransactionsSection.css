@@ -1,0 +1,63 @@
+/* ------------------- */
+/* 交易記錄列表         */
+/* ------------------- */
+.transactions-section {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.transactions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-name {
+  font-weight: bold;
+}
+
+.transaction-date {
+  color: #777;
+  margin: 0 15px;
+}
+
+.transaction-amount {
+  font-weight: bold;
+}
+
+.transaction-amount.income {
+  color: #28a745;
+}
+
+.transaction-amount.expense {
+  color: #dc3545;
+}

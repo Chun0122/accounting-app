@@ -1,0 +1,61 @@
+/* ------------------- */
+/* 基本結構樣式         */
+/* ------------------- */
+.home-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.home-container {
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+  transition-delay: 0.1s;
+}
+
+.daily-group {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.daily-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: -15px -15px 15px -15px;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  color: #666;
+}
+
+.daily-total {
+  font-size: 0.9em;
+  font-weight: bold;
+  /* 移除原本固定的紅色設定 */
+}
+
+/* 調整原有交易列表間距 */
+.transactions-list {
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column; /*  垂直排列表單欄位 */
+}

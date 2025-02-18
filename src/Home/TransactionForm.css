@@ -1,0 +1,71 @@
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block; /*  label 佔據整行寬度 */
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box; /*  避免 padding 影響寬度 */
+}
+
+/*  textarea 的樣式可以與 form-control 共用 */
+textarea.form-control {
+  resize: vertical; /*  允許垂直方向調整大小 */
+  min-height: 100px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end; /*  按鈕靠右對齊 */
+  gap: 10px; /*  按鈕間距 */
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.form-actions .save-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.form-actions .save-button:hover {
+  background-color: #218838;
+}
+
+.form-actions .cancel-button {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.form-actions .cancel-button:hover {
+  background-color: #eee;
+}
+
+.error-message {
+  color: #dc3545; /* 紅色 */
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
