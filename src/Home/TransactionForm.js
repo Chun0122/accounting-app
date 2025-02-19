@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./TransactionForm.css"; //  引入 TransactionForm 的 CSS 樣式
 
@@ -27,16 +27,49 @@ function TransactionForm({
   currencyOptions,
   setIsAddModalOpen,
   fetchTransactions,
+  editingTransaction,
 }) {
   const navigate = useNavigate();
   //  新增 state 用於儲存表單驗證錯誤訊息
   const [formErrors, setFormErrors] = useState({});
 
+  //  使用 useEffect Hook，在元件 Mount 後，根據 editingTransaction 預設表單欄位值
+  useEffect(() => {
+    if (editingTransaction) {
+      //  如果 editingTransaction 有值 (編輯模式)，預先填入表單欄位
+      setTransactionDate(editingTransaction.transactionDate || "");
+      setTransactionType(
+        editingTransaction.transactionType.toLowerCase() || "expense"
+      );
+      setCategoryId(editingTransaction.categoryId || "");
+      setSubcategoryId(editingTransaction.subcategoryId || "");
+      setPaymentMethodId(editingTransaction.paymentMethodId || "");
+      setCurrencyId(editingTransaction.currencyId || "");
+      setAmount(editingTransaction.amount || "");
+      setDescription(editingTransaction.description || "");
+      setNotes(editingTransaction.notes || "");
+    } else {
+      // 重置表單
+      const today = new Date().toISOString().slice(0, 10);
+      setTransactionDate(today);
+      setTransactionType("expense");
+      setCategoryId("");
+      setSubcategoryId("");
+      setPaymentMethodId("");
+      setCurrencyId("1"); // 預設幣別
+      setAmount("");
+      setDescription("");
+      setNotes("");
+    }
+  }, [editingTransaction]); // dependency array 加入 editingTransaction 和所有 setter 函式
+
   //  使用 fetch API 呼叫後端 API  (取代原本的 Placeholder 函式)
   const submitTransactionData = (formData) => {
     //  後端 API 端點 URL (請務必替換成您後端實際的 API 端點 URL)
     console.log("Sending data:", JSON.stringify(formData));
-    const apiUrl = "/api/Transactions/CreateTransaction";
+    const apiUrl = editingTransaction
+      ? `/api/Transactions/UpdateTransaction/${editingTransaction.transactionId}` //  更新交易 API endpoint (需要後端提供)
+      : "/api/Transactions/CreateTransaction";
 
     //  從 localStorage 取得 Token
     const token = localStorage.getItem("authToken");
@@ -58,7 +91,7 @@ function TransactionForm({
     }
 
     return fetch(apiUrl, {
-      method: "POST", //  HTTP 方法為 POST
+      method: editingTransaction ? "PUT" : "POST", //  HTTP 方法為 POST
       headers: {
         "Content-Type": "application/json", //  設定請求 Header，Content-Type 為 application/json
         Authorization: `Bearer ${token}`,
@@ -172,8 +205,6 @@ function TransactionForm({
         description,
         notes,
       };
-
-      console.log("formData (修正後):", formData);
 
       //  呼叫 API 提交資料 (使用 fetch API 函式)
       submitTransactionData(formData)
@@ -359,7 +390,7 @@ function TransactionForm({
       {/* 儲存和取消按鈕 (保持不變) */}
       <div className="form-actions">
         <button type="submit" className="save-button">
-          儲存
+          {editingTransaction ? "更新" : "儲存"}
         </button>
         <button
           type="button"

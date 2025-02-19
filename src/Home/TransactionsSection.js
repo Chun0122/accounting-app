@@ -1,22 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./TransactionsSection.css";
 
 function TransactionsSection({ transactions, setIsAddModalOpen }) {
+  const [selectedTransactionId, setSelectedTransactionId] = useState(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".transaction-item")) {
+        setSelectedTransactionId(null);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   const formatDate = (dateString) => {
-    const dateParts = dateString.split("-"); //  ✅ 使用 split('-') 分割日期字串
+    const dateParts = dateString.split("-"); //  使用 split('-') 分割日期字串
     console.log(dateString);
     if (dateParts.length !== 3) {
-      //  ✅ 如果分割後的日期部分數量不是 3 (年、月、日)，表示日期格式錯誤
+      //  如果分割後的日期部分數量不是 3 (年、月、日)，表示日期格式錯誤
       console.error("日期字串格式錯誤 (YYYY-MM-DD):", dateString);
       return "日期格式錯誤"; //  或者返回其他預設值
     }
 
-    const year = parseInt(dateParts[0], 10); //  ✅ 解析年份 (字串轉數字)
-    const month = parseInt(dateParts[1], 10); //  ✅ 解析月份 (字串轉數字)
-    const day = parseInt(dateParts[2], 10); //  ✅ 解析日期 (字串轉數字)
+    const year = parseInt(dateParts[0], 10); //  解析年份 (字串轉數字)
+    const month = parseInt(dateParts[1], 10); //  解析月份 (字串轉數字)
+    const day = parseInt(dateParts[2], 10); //  解析日期 (字串轉數字)
 
     if (isNaN(year) || isNaN(month) || isNaN(day)) {
-      //  ✅ 如果年、月、日任何一個解析失敗，表示日期格式錯誤
+      //  如果年、月、日任何一個解析失敗，表示日期格式錯誤
       console.error("日期部分解析失敗:", dateString);
       return "日期格式錯誤"; //  或者返回其他預設值
     }
@@ -36,15 +51,18 @@ function TransactionsSection({ transactions, setIsAddModalOpen }) {
 
   // 計算每日總額
   const calculateDailyTotal = (transactions) => {
-    const total = transactions.reduce((sum, t) => sum + t.amount, 0);
+    const total = transactions.reduce(
+      (sum, t) =>
+        t.transactionType === "income" ? sum + t.amount : sum - t.amount,
+      0
+    );
+    console.log(total);
     return {
       amount: total,
-      // 判斷顯示顏色
+      // 如果淨額大於等於 0 顯示綠色，否則顯示紅色
       color: total >= 0 ? "#28a745" : "#dc3545",
-      // 格式化金額顯示
-      formatted: `${total >= 0 ? "+" : "-"}$${Math.abs(
-        total
-      ).toLocaleString()}`,
+      // 格式化金額顯示，根據正負決定加號或減號
+      formatted: `${total >= 0 ? "+" : "-"}${Math.abs(total).toLocaleString()}`,
     };
   };
 
@@ -90,9 +108,17 @@ function TransactionsSection({ transactions, setIsAddModalOpen }) {
             {/* 交易列表 */}
             <ul className="transactions-list">
               {transactions.map((item, index) => {
-                const isIncome = item.amount >= 0;
+                const isIncome = item.transactionType === "income";
+                const isSelected = selectedTransactionId === item.transactionId;
                 return (
-                  <li key={index} className="transaction-item">
+                  <li
+                    key={index}
+                    className="transaction-item"
+                    onClick={() => {
+                      setSelectedTransactionId(item.transactionId);
+                      setIsAddModalOpen(true, item); // 傳遞整個交易項目資料
+                    }}
+                  >
                     <div className="transaction-info">
                       <span className="transaction-name">
                         {item.categoryName}
@@ -109,8 +135,20 @@ function TransactionsSection({ transactions, setIsAddModalOpen }) {
                         (isIncome ? "income" : "expense")
                       }
                     >
-                      {isIncome ? `+${item.amount}` : item.amount}
+                      {isIncome ? `+${item.amount}` : `-${item.amount}`}
                     </span>
+                    {/*  條件式渲染編輯選單  */}
+                    {isSelected && (
+                      <div className="transaction-options">
+                        <button
+                          className="edit-button"
+                          onClick={() => setIsAddModalOpen(true, item)} // 修改編輯按鈕 onClick 事件處理器
+                        >
+                          編輯
+                        </button>
+                        <button className="delete-button">刪除</button>
+                      </div>
+                    )}
                   </li>
                 );
               })}

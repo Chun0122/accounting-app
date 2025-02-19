@@ -12,6 +12,7 @@ function HomeScreen() {
   const navigate = useNavigate();
   //  新增 state 來控制 Modal 的顯示與隱藏
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
   //  新增 state 用於管理新增交易表單的各個欄位值
   const [transactionDate, setTransactionDate] = useState(
@@ -26,40 +27,10 @@ function HomeScreen() {
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState("");
   const [transactions, setTransactions] = useState([]);
-
-  //  下拉選單選項 (假資料，之後會從後端 API 取得)
-  const [categoryOptions, setCategoryOptions] = useState([
-    { value: "1", label: "餐飲" },
-    { value: "2", label: "交通" },
-    { value: "3", label: "娛樂" },
-    { value: "4", label: "薪資" },
-    { value: "5", label: "獎金" },
-  ]);
-  const [subcategoryOptions, setSubcategoryOptions] = useState([
-    { value: "1", label: "早餐" },
-    { value: "2", label: "午餐" },
-    { value: "3", label: "晚餐" },
-    { value: "4", label: "捷運" },
-    { value: "5", label: "公車" },
-    { value: "6", label: "電影" },
-    { value: "7", label: "KTV" },
-    { value: "8", label: "主業收入" },
-    { value: "9", label: "兼職收入" },
-    { value: "10", label: "年終獎金" },
-    { value: "11", label: "績效獎金" },
-  ]);
-  const [paymentMethodOptions, setPaymentMethodOptions] = useState([
-    { value: "1", label: "現金" },
-    { value: "2", label: "信用卡" },
-    { value: "3", label: "Line Pay" },
-    { value: "4", label: "悠遊卡" },
-    { value: "5", label: "街口支付" },
-  ]);
-  const [currencyOptions, setCurrencyOptions] = useState([
-    { value: 1, label: "新台幣 (TWD)" },
-    { value: 2, label: "美元 (USD)" },
-    { value: 3, label: "日圓 (JPY)" },
-  ]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [subcategoryOptions, setSubcategoryOptions] = useState([]);
+  const [paymentMethodOptions, setPaymentMethodOptions] = useState([]);
+  const [currencyOptions, setCurrencyOptions] = useState([]);
 
   const fetchTransactions = useCallback(() => {
     const apiUrl = "/api/Transactions/GetTransactions";
@@ -105,6 +76,129 @@ function HomeScreen() {
     }
   }, [navigate, fetchTransactions]);
 
+  // 新增 useEffect Hook 載入 帳務類別 選項
+  useEffect(() => {
+    const fetchCategoryOptions = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await fetch(
+          "/api/DropdownOptions/Categories", //  請替換成 帳務類別 API 端點 URL
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, //  如果 API 需要 Token，請加入
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); //  假設 API 回傳的資料格式為 [{ id: 1, name: "餐飲" }, ...] //  需要將 API 資料轉換成 <Select> 元件可用的格式 [{ value: "1", label: "餐飲" }, ...]
+        const options = data.map((item) => ({
+          value: String(item.value), //  value 屬性通常是字串，確保轉換
+          label: item.label, //  label 屬性通常是顯示名稱
+        }));
+        setCategoryOptions(options);
+      } catch (error) {
+        console.error("載入帳務類別選項時發生錯誤:", error); //  可以加入錯誤處理，例如顯示錯誤訊息給使用者
+      }
+    };
+    fetchCategoryOptions();
+  }, []); // dependency array 為空，確保只在元件 Mount 時執行一次 // 新增 useEffect Hook 載入 帳務子類別 選項 (程式碼結構與上方類似，請自行完成)
+
+  useEffect(() => {
+    const fetchSubcategoryOptions = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await fetch(
+          "/api/DropdownOptions/Subcategories", //  請替換成 帳務子類別 API 端點 URL
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, //  如果 API 需要 Token，請加入
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); //  假設 API 回傳的資料格式為 [{ subcategory_id: 1, subcategory_name: "早餐" }, ...] //  需要將 API 資料轉換成 <Select> 元件可用的格式 [{ value: "1", label: "早餐" }, ...]
+        const options = data.map((item) => ({
+          value: String(item.value), //  value 屬性通常是字串，確保轉換
+          label: item.label, //  label 屬性通常是顯示名稱
+        }));
+        setSubcategoryOptions(options);
+      } catch (error) {
+        console.error("載入帳務子類別選項時發生錯誤:", error); //  可以加入錯誤處理，例如顯示錯誤訊息給使用者
+      }
+    };
+    fetchSubcategoryOptions();
+  }, []); // dependency array 為空，確保只在元件 Mount 時執行一次 // 新增 useEffect Hook 載入 付款方式 選項 (程式碼結構與上方類似，請自行完成)
+
+  useEffect(() => {
+    const fetchPaymentMethodOptions = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await fetch(
+          "/api/DropdownOptions/PaymentMethods", //  請替換成 付款方式 API 端點 URL
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, //  如果 API 需要 Token，請加入
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); //  假設 API 回傳的資料格式為 [{ payment_method_id: 1, payment_method_name: "現金" }, ...] //  需要將 API 資料轉換成 <Select> 元件可用的格式 [{ value: "1", label: "現金" }, ...]
+        const options = data.map((item) => ({
+          value: String(item.value), //  value 屬性通常是字串，確保轉換
+          label: item.label, //  label 屬性通常是顯示名稱
+        }));
+        setPaymentMethodOptions(options);
+      } catch (error) {
+        console.error("載入付款方式選項時發生錯誤:", error); //  可以加入錯誤處理，例如顯示錯誤訊息給使用者
+      }
+    };
+    fetchPaymentMethodOptions();
+  }, []); // dependency array 為空，確保只在元件 Mount 時執行一次 // 新增 useEffect Hook 載入 幣別 選項 (程式碼結構與上方類似，請自行完成)
+
+  useEffect(() => {
+    const fetchCurrencyOptions = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await fetch(
+          "/api/DropdownOptions/Currencies", //  請替換成 幣別 API 端點 URL
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, //  如果 API 需要 Token，請加入
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); //  假設 API 回傳的資料格式為 [{ currency_id: 1, currency_name: "新台幣", currency_code: "TWD" }, ...] //  需要將 API 資料轉換成 <Select> 元件可用的格式 [{ value: 1, label: "新台幣 (TWD)" }, ...]
+        const options = data.map((item) => ({
+          value: item.value, //  value 屬性通常是數字，保持數字類型
+          label: item.label, //  label 屬性通常是顯示名稱
+        }));
+        setCurrencyOptions(options);
+      } catch (error) {
+        console.error("載入幣別選項時發生錯誤:", error); //  可以加入錯誤處理，例如顯示錯誤訊息給使用者
+      }
+    };
+    fetchCurrencyOptions();
+  }, []); // dependency array 為空，確保只在元件 Mount 時執行一次
+
+  //  修改 setIsAddModalOpen 函式，使其可以接收 editingTransaction 參數
+  const handleSetIsAddModalOpen = (isOpen, transactionData = null) => {
+    setIsAddModalOpen(isOpen);
+    setEditingTransaction(transactionData); // 設定 editingTransaction state
+  };
+
   return (
     <div className="home-page">
       {/* 左上方的選單按鈕 */}
@@ -117,37 +211,60 @@ function HomeScreen() {
         {/* 交易記錄列表 */}
         <TransactionsSection
           transactions={transactions}
-          setIsAddModalOpen={setIsAddModalOpen}
+          setIsAddModalOpen={handleSetIsAddModalOpen}
         />
       </div>
       {/* 新增交易 Modal */}
       <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <h2>新增交易</h2>
+        <h2>{editingTransaction ? "編輯交易" : "新增交易"}</h2>
         <TransactionForm
-          transactionDate={transactionDate}
+          transactionDate={
+            editingTransaction
+              ? editingTransaction.transactionDate
+              : transactionDate
+          }
           setTransactionDate={setTransactionDate}
-          transactionType={transactionType}
+          transactionType={
+            editingTransaction
+              ? editingTransaction.transactionType.toLowerCase()
+              : transactionType
+          }
           setTransactionType={setTransactionType}
-          categoryId={categoryId}
+          categoryId={
+            editingTransaction ? editingTransaction.categoryId : categoryId
+          }
           setCategoryId={setCategoryId}
-          subcategoryId={subcategoryId}
+          subcategoryId={
+            editingTransaction
+              ? editingTransaction.subcategoryId
+              : subcategoryId
+          }
           setSubcategoryId={setSubcategoryId}
-          paymentMethodId={paymentMethodId}
+          paymentMethodId={
+            editingTransaction
+              ? editingTransaction.paymentMethodId
+              : paymentMethodId
+          }
           setPaymentMethodId={setPaymentMethodId}
-          currencyId={currencyId}
+          currencyId={
+            editingTransaction ? editingTransaction.currencyId : currencyId
+          }
           setCurrencyId={setCurrencyId}
-          amount={amount}
+          amount={editingTransaction ? editingTransaction.amount : amount}
           setAmount={setAmount}
-          description={description}
+          description={
+            editingTransaction ? editingTransaction.description : description
+          }
           setDescription={setDescription}
-          notes={notes}
+          notes={editingTransaction ? editingTransaction.notes : notes}
           setNotes={setNotes}
           categoryOptions={categoryOptions}
           subcategoryOptions={subcategoryOptions}
           paymentMethodOptions={paymentMethodOptions}
           currencyOptions={currencyOptions}
-          setIsAddModalOpen={setIsAddModalOpen}
+          setIsAddModalOpen={handleSetIsAddModalOpen}
           fetchTransactions={fetchTransactions}
+          editingTransaction={editingTransaction}
         />
       </Modal>
     </div>

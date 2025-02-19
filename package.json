@@ -44,7 +44,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://localhost:44318",
+  "proxy": "https://localhost:7258",
   "devDependencies": {
     "shadcn-ui": "^0.9.4"
   }
