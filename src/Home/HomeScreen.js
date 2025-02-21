@@ -57,7 +57,18 @@ function HomeScreen() {
     }
     loadTransactions();
     loadOptions("Categories", setCategoryOptions);
-    loadOptions("Subcategories", setSubcategoryOptions);
+    // 取得全部子類別，並保留 categoryId 資訊
+    fetchOptions("Subcategories", token)
+      .then((data) =>
+        setSubcategoryOptions(
+          data.map((item) => ({
+            value: String(item.value),
+            label: item.label,
+            categoryId: String(item.categoryId), // 保留 categoryId 資訊
+          }))
+        )
+      )
+      .catch((error) => console.error("載入 Subcategories 選項失敗:", error));
     loadOptions("PaymentMethods", setPaymentMethodOptions);
     loadOptions("Currencies", setCurrencyOptions);
   }, [loadTransactions, loadOptions, navigate]);

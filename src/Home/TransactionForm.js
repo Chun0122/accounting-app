@@ -15,7 +15,7 @@ function TransactionForm({
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
 
-  // 初始化表單數據
+  // 初始化或編輯時設定表單數據
   useEffect(() => {
     if (editingTransaction) {
       setFormData({
@@ -68,6 +68,46 @@ function TransactionForm({
       return res.json();
     });
   };
+
+  // 刪除處理（僅在編輯模式下顯示）
+  const handleDelete = () => {
+    if (!editingTransaction) return;
+    if (!window.confirm("確定要刪除這筆交易嗎？")) return;
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("您尚未登入或登入已過期，請重新登入。");
+      navigate("/login");
+      return;
+    }
+    fetch(
+      `/api/Transactions/DeleteTransaction/${editingTransaction.transactionId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("刪除失敗");
+        return res.json();
+      })
+      .then(() => {
+        alert("交易刪除成功！");
+        setIsAddModalOpen(false);
+        fetchTransactions();
+      })
+      .catch((error) => {
+        alert(error.message || "刪除失敗，請稍後再試。");
+      });
+  };
+
+  // 根據所選的 categoryId 過濾子類別選項
+  const filteredSubcategoryOptions = formData.categoryId
+    ? subcategoryOptions.filter(
+        (option) => option.categoryId === String(formData.categoryId)
+      )
+    : [];
 
   // 表單驗證
   const validateForm = () => {
@@ -122,10 +162,18 @@ function TransactionForm({
       .catch((error) => alert(error.message || "交易提交失敗，請稍後再試。"));
   };
 
-  // 輸入處理
-  const handleChange = (field) => (e) =>
-    setFormData({ ...formData, [field]: e.target.value });
-
+  // 當更改帳務類別時，同時重置子類別欄位
+  const handleChange = (field) => (e) => {
+    if (field === "categoryId") {
+      setFormData({
+        ...formData,
+        categoryId: e.target.value,
+        subcategoryId: "",
+      });
+    } else {
+      setFormData({ ...formData, [field]: e.target.value });
+    }
+  };
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -184,7 +232,7 @@ function TransactionForm({
           onChange={handleChange("subcategoryId")}
         >
           <option value="">請選擇子類別 (選填)</option>
-          {subcategoryOptions.map((option) => (
+          {filteredSubcategoryOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -265,16 +313,27 @@ function TransactionForm({
         )}
       </div>
       <div className="form-actions">
-        <button type="submit" className="save-button">
-          {editingTransaction ? "更新" : "儲存"}
-        </button>
-        <button
-          type="button"
-          className="cancel-button"
-          onClick={() => setIsAddModalOpen(false)}
-        >
-          取消
-        </button>
+        {editingTransaction && (
+          <button
+            type="button"
+            className="delete-button"
+            onClick={handleDelete}
+          >
+            刪除
+          </button>
+        )}
+        <div className="right-buttons">
+          <button type="submit" className="save-button">
+            {editingTransaction ? "更新" : "儲存"}
+          </button>
+          <button
+            type="button"
+            className="cancel-button"
+            onClick={() => setIsAddModalOpen(false)}
+          >
+            取消
+          </button>
+        </div>
       </div>
     </form>
   );

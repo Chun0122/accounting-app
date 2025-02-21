@@ -33,8 +33,13 @@ textarea.form-control {
 .form-actions {
   margin-top: 20px;
   display: flex;
-  justify-content: flex-end; /*  按鈕靠右對齊 */
-  gap: 10px; /*  按鈕間距 */
+  justify-content: space-between; /* Changed from flex-end to space-between */
+  gap: 10px;
+}
+
+.form-actions .right-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .form-actions button {
@@ -50,8 +55,9 @@ textarea.form-control {
   color: white;
 }
 
-.form-actions .save-button:hover {
-  background-color: #218838;
+.form-actions .delete-button {
+  background-color: #dc3545;
+  color: white;
 }
 
 .form-actions .cancel-button {
@@ -60,8 +66,16 @@ textarea.form-control {
   border: 1px solid #ddd;
 }
 
+.form-actions .save-button:hover {
+  background-color: #218838;
+}
+
 .form-actions .cancel-button:hover {
   background-color: #eee;
+}
+
+.form-actions .delete-button:hover {
+  background-color: #c82333;
 }
 
 .error-message {
