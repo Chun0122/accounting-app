@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomeScreen.css";
 import Modal from "../Modal/Modal";
-import Sidebar from "../SideBar/Sidebar";
 import ChartSection from "./ChartSection";
 import TransactionsSection from "./TransactionsSection";
 import TransactionForm from "./TransactionForm";
-import { fetchOptions, fetchTransactions } from "../Util/api"; // 假設有一個 api.js 檔案
-
+// import { fetchOptions, fetchTransactions } from "../Util/api/api";
+import { HomeScreenApi } from "../Util/api/HomeScreenApi";
 function HomeScreen() {
   const navigate = useNavigate();
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -24,7 +24,7 @@ function HomeScreen() {
       navigate("/login");
       return;
     }
-    fetchTransactions(token)
+    HomeScreenApi.fetchTransactions(token)
       .then((data) => setTransactions(data))
       .catch((error) => console.error("獲取交易資料失敗:", error));
   }, [navigate]);
@@ -32,7 +32,7 @@ function HomeScreen() {
   const loadOptions = useCallback((endpoint, setter) => {
     const token = localStorage.getItem("authToken");
     if (!token) return;
-    fetchOptions(endpoint, token)
+    HomeScreenApi.fetchOptions(endpoint, token)
       .then((data) =>
         setter(
           data.map((item) => ({ value: String(item.value), label: item.label }))
@@ -58,7 +58,7 @@ function HomeScreen() {
     loadTransactions();
     loadOptions("Categories", setCategoryOptions);
     // 取得全部子類別，並保留 categoryId 資訊
-    fetchOptions("Subcategories", token)
+    HomeScreenApi.fetchOptions("Subcategories", token)
       .then((data) =>
         setSubcategoryOptions(
           data.map((item) => ({
@@ -80,7 +80,6 @@ function HomeScreen() {
 
   return (
     <div className="home-page">
-      <Sidebar />
       <div className="home-container">
         <ChartSection totalIncome={totalIncome} totalExpense={totalExpense} />
         <TransactionsSection

@@ -1,0 +1,87 @@
+.categories-form-modal-content {
+  padding: 20px;
+}
+
+.modal-title {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #343a40; /* 標題文字顏色 (深灰色) */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block; /* Label 獨佔一行 */
+  margin-bottom: 5px;
+  font-weight: bold; /* Label 文字粗體 */
+  color: #495057; /* Label 文字顏色 (深灰色) */
+}
+
+.form-control {
+  width: 100%; /* 輸入框寬度 100% */
+  padding: 10px;
+  border: 1px solid #ced4da; /* 輸入框邊框 (淺灰色) */
+  border-radius: 4px; /* 輸入框圓角 */
+  font-size: 1rem;
+  box-sizing: border-box; /* 讓 padding 包含在寬度內 */
+}
+
+.form-control:focus {
+  border-color: #007bff; /* Focus 狀態邊框顏色 (藍色) */
+  outline: none; /* 移除預設 Focus 樣式 */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus 狀態陰影 (藍色) */
+}
+
+.error-message {
+  color: #dc3545; /* 錯誤訊息文字顏色 (紅色) */
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.error-message.api-error {
+  margin-top: 10px; /* API 錯誤訊息與表單欄位區隔 */
+  text-align: center; /* API 錯誤訊息置中對齊 */
+  font-weight: bold; /* API 錯誤訊息粗體 */
+}
+
+.form-actions {
+  margin-top: 20px;
+  text-align: center; /* 按鈕置中對齊 */
+}
+
+.save-button,
+.cancel-button {
+  padding: 10px 20px;
+  border: none; /* 移除邊框 */
+  border-radius: 5px; /* 設定圓角 */
+  cursor: pointer; /* 滑鼠游標變更為手指 */
+  font-size: 1rem;
+  margin: 0 10px; /* 按鈕間距 */
+  transition: background-color 0.2s ease-in-out; /* Hover 效果過渡動畫 */
+}
+
+.save-button {
+  background-color: #28a745; /* 儲存按鈕背景色 (綠色) */
+  color: white; /* 儲存按鈕文字顏色 (白色) */
+}
+
+.save-button:hover {
+  background-color: #218838; /* 儲存按鈕 Hover 狀態背景色 (深綠色) */
+}
+
+.cancel-button {
+  background-color: #6c757d; /* 取消按鈕背景色 (灰色) */
+  color: white; /* 取消按鈕文字顏色 (白色) */
+}
+
+.cancel-button:hover {
+  background-color: #5a6268; /* 取消按鈕 Hover 狀態背景色 (深灰色) */
+}
+
+.save-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.7; /* 按鈕禁用狀態透明度 */
+  cursor: not-allowed; /* 游標變更為禁用圖示 */
+}

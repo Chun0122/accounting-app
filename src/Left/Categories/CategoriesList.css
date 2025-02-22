@@ -1,0 +1,118 @@
+.categories-list-container {
+  padding: 40px; /* 增加內距 */
+  max-width: 1200px; /* 設定最大寬度 */
+  margin: 0 auto; /* 水平置中 */
+  box-sizing: border-box;
+}
+
+.categories-list-header {
+  margin-bottom: 20px;
+  text-align: right; /* 新增按鈕靠右對齊 */
+  margin: 0 20px 20px;
+}
+
+.add-category-button {
+  padding: 10px 15px;
+  background-color: #007bff; /* 按鈕背景色 (藍色) */
+  color: white; /* 按鈕文字顏色 (白色) */
+  border: none; /* 移除邊框 */
+  border-radius: 5px; /* 設定圓角 */
+  cursor: pointer; /* 滑鼠游標變更為手指 */
+  transition: background-color 0.2s ease-in-out; /* Hover 效果過渡動畫 */
+}
+
+.add-category-button:hover {
+  background-color: #0056b3; /* Hover 狀態背景色 (深藍色) */
+}
+
+.categories-table {
+  width: 100%; /* 稍微縮減表格寬度 */
+  margin: 20px auto; /* 增加上下邊距並水平置中 */
+  border-collapse: collapse;
+}
+
+.categories-table th,
+.categories-table td {
+  border: 1px solid #dee2e6; /* 表格框線 (淺灰色) */
+  padding: 12px 16px;
+  text-align: left; /* 文字靠左對齊 */
+}
+
+.categories-table th {
+  background-color: #f8f9fa; /* 表格 Header 背景色 (淺灰色) */
+  font-weight: bold; /* Header 文字粗體 */
+}
+
+.actions-column {
+  text-align: center; /* 操作按鈕置中對齊 */
+  white-space: nowrap; /* 防止按鈕換行 */
+}
+
+.edit-button,
+.delete-button {
+  padding: 8px 12px;
+  border: none; /* 移除邊框 */
+  border-radius: 5px; /* 設定圓角 */
+  cursor: pointer; /* 滑鼠游標變更為手指 */
+  margin-right: 5px; /* 按鈕間距 */
+  transition: background-color 0.2s ease-in-out; /* Hover 效果過渡動畫 */
+  font-size: 0.9rem; /* 縮小按鈕文字 */
+}
+
+.edit-button {
+  background-color: #ffc107; /* 編輯按鈕背景色 (黃色) */
+  color: black; /* 編輯按鈕文字顏色 (黑色) */
+}
+
+.edit-button:hover {
+  background-color: #ffca2b; /* 編輯按鈕 Hover 狀態背景色 (更亮的黃色) */
+}
+
+.delete-button {
+  background-color: #dc3545; /* 刪除按鈕背景色 (紅色) */
+  color: white; /* 刪除按鈕文字顏色 (白色) */
+}
+
+.delete-button:hover {
+  background-color: #c82333; /* 刪除按鈕 Hover 狀態背景色 (深紅色) */
+}
+
+.no-data {
+  text-align: center; /* 無資料提示文字置中對齊 */
+  padding: 10px;
+  font-style: italic; /* 斜體 */
+  color: #6c757d; /* 文字顏色 (灰色) */
+}
+
+/* 在 .categories-table 中新增以下樣式 */
+.categories-table th:nth-child(1), /* ID 欄 */
+.categories-table td:nth-child(1) {
+  width: 10%; /* ID 欄位寬度 */
+}
+
+.categories-table th:nth-child(2), /* 名稱欄 */
+.categories-table td:nth-child(2) {
+  width: 20%; /* 名稱欄位寬度 */
+}
+
+.categories-table th:nth-child(3), /* 描述欄 */
+.categories-table td:nth-child(3) {
+  width: 50%; /* 描述欄位寬度 */
+}
+
+.categories-table th:nth-child(4), /* 操作欄 */
+.categories-table td:nth-child(4) {
+  width: 20%; /* 操作欄位寬度 */
+}
+
+/* 調整操作欄按鈕 */
+.actions-column {
+  text-align: center;
+  white-space: nowrap;
+  width: 1%; /* 讓操作欄盡可能縮小 */
+}
+
+/* 如果描述內容過長，可以考慮加入以下樣式控制換行 */
+.categories-table td:nth-child(3) {
+  word-break: break-word; /* 允許長文字換行 */
+}

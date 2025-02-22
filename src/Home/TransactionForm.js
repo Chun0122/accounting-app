@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./TransactionForm.css";
 
+import { HomeScreenApi } from "../Util/api/HomeScreenApi";
+
 function TransactionForm({
   categoryOptions,
   subcategoryOptions,
@@ -47,26 +49,8 @@ function TransactionForm({
 
   // 提交表單數據
   const submitTransactionData = (data) => {
-    const apiUrl = editingTransaction
-      ? `/api/Transactions/UpdateTransaction/${editingTransaction.transactionId}`
-      : "/api/Transactions/CreateTransaction";
     const token = localStorage.getItem("authToken");
-    if (!token) {
-      alert("您尚未登入或登入已過期，請重新登入。");
-      navigate("/login");
-      return Promise.reject(new Error("Token not found"));
-    }
-    return fetch(apiUrl, {
-      method: editingTransaction ? "PUT" : "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      if (!res.ok) throw new Error("交易提交失敗");
-      return res.json();
-    });
+    return HomeScreenApi.submitTransaction(editingTransaction, token, data);
   };
 
   // 刪除處理（僅在編輯模式下顯示）
@@ -79,19 +63,7 @@ function TransactionForm({
       navigate("/login");
       return;
     }
-    fetch(
-      `/api/Transactions/DeleteTransaction/${editingTransaction.transactionId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error("刪除失敗");
-        return res.json();
-      })
+    HomeScreenApi.deleteTransaction(editingTransaction.transactionId, token)
       .then(() => {
         alert("交易刪除成功！");
         setIsAddModalOpen(false);

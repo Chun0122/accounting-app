@@ -49,19 +49,6 @@
   transform: translateX(0);
 }
 
-.menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-grow: 1;
-  padding-top: 30px;
-}
-
-.menu-item {
-  padding: 10px 0;
-  cursor: pointer;
-}
-
 /* 登出按鈕固定在側邊欄底部 */
 .logout-button {
   background: none;
@@ -95,4 +82,32 @@
 .sidebar.open + .home-container {
   margin-left: 250px;
   transition: margin-left 0.3s ease-in-out;
+}
+
+.sidebar-menu {
+  list-style: none; /* 移除列表符號 */
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* 讓選單列表佔滿剩餘空間 */
+}
+
+.sidebar-item {
+  padding: 0;
+  margin-bottom: 5px; /* 選單項目間距 */
+}
+
+.sidebar-link {
+  display: block; /* 讓 Link 佔滿 li 寬度 */
+  padding: 12px 20px;
+  text-decoration: none; /* 移除連結底線 */
+  color: #495057; /* 選單項目文字顏色 (深灰色) */
+  font-weight: 500;
+  transition: background-color 0.15s ease-in-out; /* Hover 效果過渡動畫 */
+  border-radius: 0; /* 移除圓角 (如果有的話) */
+}
+
+.sidebar-link:hover,
+.sidebar-item.active .sidebar-link {
+  background-color: #e9ecef; /* Hover 和 Active 狀態背景色 (更淺的灰色) */
+  color: #007bff; /* Hover 和 Active 狀態文字顏色 (藍色) */
 }
