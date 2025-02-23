@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./TransactionForm.css";
 
 import { HomeScreenApi } from "../Util/api/HomeScreenApi";
+import { createApiClient } from "../Util/api/apiClient";
 
 function TransactionForm({
   categoryOptions,
@@ -14,14 +15,20 @@ function TransactionForm({
   editingTransaction,
 }) {
   const navigate = useNavigate();
+  // 初始化 API 客戶端，綁定導航函數
+  const [api] = useState(
+    () => createApiClient(() => navigate("/login")) // 401 時觸發導向登入頁
+  );
+  const [homeApi] = useState(() => HomeScreenApi(api));
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
 
   // 初始化或編輯時設定表單數據
   useEffect(() => {
     if (editingTransaction) {
+      console.log(editingTransaction.transactionDate);
       setFormData({
-        transactionDate: editingTransaction.transactionDate || "",
+        transactionDate: editingTransaction.transactionDate.slice(0, 10) || "",
         transactionType:
           editingTransaction.transactionType.toLowerCase() || "expense",
         categoryId: editingTransaction.categoryId || "",
@@ -47,23 +54,11 @@ function TransactionForm({
     }
   }, [editingTransaction]);
 
-  // 提交表單數據
-  const submitTransactionData = (data) => {
-    const token = localStorage.getItem("authToken");
-    return HomeScreenApi.submitTransaction(editingTransaction, token, data);
-  };
-
   // 刪除處理（僅在編輯模式下顯示）
   const handleDelete = () => {
     if (!editingTransaction) return;
-    if (!window.confirm("確定要刪除這筆交易嗎？")) return;
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      alert("您尚未登入或登入已過期，請重新登入。");
-      navigate("/login");
-      return;
-    }
-    HomeScreenApi.deleteTransaction(editingTransaction.transactionId, token)
+    homeApi
+      .deleteTransaction(editingTransaction.transactionId)
       .then(() => {
         alert("交易刪除成功！");
         setIsAddModalOpen(false);
@@ -125,7 +120,8 @@ function TransactionForm({
       amount: parseFloat(formData.amount) || null,
     };
 
-    submitTransactionData(submitData)
+    homeApi
+      .submitTransaction(editingTransaction, submitData)
       .then(() => {
         alert(`交易${editingTransaction ? "更新" : "新增"}成功！`);
         setIsAddModalOpen(false);

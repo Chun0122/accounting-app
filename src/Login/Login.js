@@ -38,8 +38,8 @@ function Login() {
           console.log("登入成功");
           // alert('登入成功！'); //  移除提示訊息
 
-          response.json().then((data) => {
-            const token = data.token; // 從 Response Body 中取得 token 值 (後端 API 返回的 token 欄位名稱)
+          response.json().then((res) => {
+            const token = res.data; // 從 Response Body 中取得 token 值 (後端 API 返回的 token 欄位名稱)
             if (token) {
               //  將 token 儲存到 localStorage，key 名稱設為 authToken'
               localStorage.setItem("authToken", token);

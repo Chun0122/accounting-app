@@ -90,19 +90,24 @@
   width: 10%; /* ID 欄位寬度 */
 }
 
-.categories-table th:nth-child(2), /* 名稱欄 */
+.categories-table th:nth-child(2), /* 類別欄 */
 .categories-table td:nth-child(2) {
-  width: 20%; /* 名稱欄位寬度 */
+  width: 15%; /* 類別欄位寬度 */
 }
 
-.categories-table th:nth-child(3), /* 描述欄 */
+.categories-table th:nth-child(3), /* 名稱欄 */
 .categories-table td:nth-child(3) {
+  width: 15%; /* 名稱欄位寬度 */
+}
+
+.categories-table th:nth-child(4), /* 描述欄 */
+.categories-table td:nth-child(4) {
   width: 50%; /* 描述欄位寬度 */
 }
 
-.categories-table th:nth-child(4), /* 操作欄 */
-.categories-table td:nth-child(4) {
-  width: 20%; /* 操作欄位寬度 */
+.categories-table th:nth-child(5), /* 操作欄 */
+.categories-table td:nth-child(5) {
+  width: 10%; /* 操作欄位寬度 */
 }
 
 /* 調整操作欄按鈕 */

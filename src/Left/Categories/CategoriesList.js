@@ -1,75 +1,54 @@
 // CategoriesList.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "../../Modal/Modal";
 import CategoriesForm from "./CategoriesForm";
 import { CategoriesApi } from "../../Util/api/CategoriesApi";
+import { createApiClient } from "../../Util/api/apiClient";
 import "./CategoriesList.css";
 
 function CategoriesList() {
+  const navigate = useNavigate();
+
+  // 初始化 API 客戶端，綁定導航函數
+  const [api] = useState(
+    () => createApiClient(() => navigate("/login")) // 401 時觸發導向登入頁
+  );
+  const [categoriesApi] = useState(() => CategoriesApi(api));
+
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
 
+  const fetchCategoriesData = useCallback(() => {
+    setIsLoading(true);
+    setError(null);
+    categoriesApi
+      .fetchCategories()
+      .then((res) => setCategories(res.data))
+      .catch((error) => setError(error))
+      .finally(() => setIsLoading(false));
+  }, [categoriesApi]);
+
   useEffect(() => {
     fetchCategoriesData();
-  }, []);
-
-  const fetchCategoriesData = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const token = localStorage.getItem("authToken");
-      if (!token) return;
-      const data = await CategoriesApi.fetchCategories(token);
-      setCategories(data);
-    } catch (error) {
-      console.error("載入帳務類別資料時發生錯誤:", error);
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [fetchCategoriesData]);
 
   const handleDeleteCategory = async (categoryId) => {
-    if (!window.confirm(`確定要刪除帳務類別 ID: ${categoryId} 嗎？`)) {
-      return;
-    }
-
+    if (!window.confirm(`確定要刪除帳務類別 ID: ${categoryId} 嗎？`)) return;
     setIsLoading(true);
     setError(null);
-
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch(
-        `/api/DropdownOptions/DeleteCategories/${categoryId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `API 請求失敗，狀態碼: ${response.status}，訊息: ${
-            errorData.message || response.statusText
-          }`
-        );
-      }
-
-      await fetchCategoriesData();
-    } catch (error) {
-      console.error("刪除帳務類別時發生錯誤:", error);
-      setError(error);
-      alert(`刪除帳務類別失敗: ${error.message}`);
-    } finally {
-      setIsLoading(false);
-    }
+    categoriesApi
+      .deleteCategory(categoryId)
+      .then(() => {
+        alert("類別刪除成功！");
+        fetchCategoriesData();
+      })
+      .catch((error) => {
+        alert(error.message || "刪除失敗，請稍後再試。");
+      });
   };
 
   const handleOpenModal = (category = null) => {
@@ -124,6 +103,7 @@ function CategoriesList() {
         <thead>
           <tr>
             <th>ID</th>
+            <th>類別</th>
             <th>名稱</th>
             <th>描述</th>
             <th>操作</th>
@@ -131,9 +111,10 @@ function CategoriesList() {
         </thead>
         <tbody>
           {categories.map((category) => (
-            <tr key={category.value}>
-              <td>{category.value}</td>
-              <td>{category.label}</td>
+            <tr key={category.categoryId}>
+              <td>{category.categoryId}</td>
+              <td>{category.categoryType === "income" ? "收入" : "支出"}</td>
+              <td>{category.categoryName}</td>
               <td>{category.description}</td>
               <td className="actions-column">
                 <button
@@ -144,7 +125,7 @@ function CategoriesList() {
                 </button>
                 <button
                   className="delete-button"
-                  onClick={() => handleDeleteCategory(category.value)}
+                  onClick={() => handleDeleteCategory(category.categoryId)}
                 >
                   刪除
                 </button>

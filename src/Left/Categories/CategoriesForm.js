@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CategoriesForm.css";
+import { CategoriesApi } from "../../Util/api/CategoriesApi";
+import { createApiClient } from "../../Util/api/apiClient";
 
 function CategoriesForm({ editingCategory, onSuccess, onCancel }) {
+  const navigate = useNavigate();
+
+  // 初始化 API 客戶端，綁定導航函數
+  const [api] = useState(
+    () => createApiClient(() => navigate("/login")) // 401 時觸發導向登入頁
+  );
+  const [categoriesApi] = useState(() => CategoriesApi(api));
+
   const [formData, setFormData] = useState({
     categoryName: "",
     description: "",
@@ -12,7 +23,8 @@ function CategoriesForm({ editingCategory, onSuccess, onCancel }) {
   useEffect(() => {
     if (editingCategory) {
       setFormData({
-        categoryName: editingCategory.label || "",
+        categoryType: editingCategory.categoryType || "",
+        categoryName: editingCategory.categoryName || "",
         description: editingCategory.description || "",
       });
     } else {
@@ -41,58 +53,45 @@ function CategoriesForm({ editingCategory, onSuccess, onCancel }) {
     if (Object.keys(errors).length === 0) {
       setIsSubmitting(true);
 
-      try {
-        const token = localStorage.getItem("authToken");
-        const apiUrl = editingCategory
-          ? `/api/Categories/${editingCategory.value}`
-          : "/api/Categories";
-        const method = editingCategory ? "PUT" : "POST";
-
-        const response = await fetch(apiUrl, {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(
-            `API 請求失敗，狀態碼: ${response.status}，訊息: ${
-              errorData.message || response.statusText
-            }`
+      categoriesApi
+        .submitCategory(editingCategory, formData)
+        .then(() => {
+          alert(editingCategory ? "帳務類別更新成功！" : "帳務類別新增成功！");
+          onSuccess();
+        })
+        .catch((error) => {
+          setFormErrors({ apiError: error.message });
+          alert(
+            editingCategory
+              ? `帳務類別更新失敗: ${error.message}`
+              : `帳務類別新增失敗: ${error.message}`
           );
-        }
-
-        const responseData = await response.json();
-        console.log(
-          editingCategory ? "更新帳務類別成功:" : "新增帳務類別成功:",
-          responseData
-        );
-
-        alert(editingCategory ? "帳務類別更新成功！" : "帳務類別新增成功！");
-        onSuccess();
-      } catch (error) {
-        console.error(
-          editingCategory ? "更新帳務類別失敗:" : "新增帳務類別失敗:",
-          error
-        );
-        setFormErrors({ apiError: error.message });
-        alert(
-          editingCategory
-            ? `帳務類別更新失敗: ${error.message}`
-            : `帳務類別新增失敗: ${error.message}`
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label htmlFor="categoryType">交易類別</label>
+        <select
+          id="categoryType"
+          className="form-control"
+          value={formData.categoryType || ""}
+          onChange={(e) =>
+            setFormData({ ...formData, categoryType: e.target.value })
+          }
+        >
+          <option value="expense">支出</option>
+          <option value="income">收入</option>
+        </select>
+        {formErrors.categoryType && (
+          <p className="error-message">{formErrors.categoryType}</p>
+        )}
+      </div>
       <div className="form-group">
         <label htmlFor="categoryName">帳務類別名稱</label>
         <input
