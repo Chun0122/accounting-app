@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# 會計應用程式 (Accounting App)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+這是一個簡單的記帳網頁應用程式，旨在幫助使用者輕鬆管理他們的個人財務。
 
-## Available Scripts
+## 功能特色
 
-In the project directory, you can run:
+- **新增帳目：** 使用者可以新增收入或支出的詳細記錄，包括日期、類別、金額和描述。
+- **檢視帳目：** 使用者可以檢視所有帳目記錄，並按照日期或類別進行排序和篩選。
+- **帳目統計：** 提供基本的統計功能，例如總收入、總支出和餘額。
+- **使用者友善介面：** 簡潔直觀的使用者介面，方便使用者快速上手。
 
-### `npm start`
+## 技術棧
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **前端：**
+  - React
+  - (請在此處補充您使用的其他前端庫或框架，例如 Redux、Material UI 等)
+- **後端：**
+  - Node.js
+  - Express.js
+  - (請在此處補充您使用的資料庫，例如 MongoDB、PostgreSQL 等)
+  - (請在此處補充您使用的其他後端庫或框架)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 安裝與執行
 
-### `npm test`
+### 前端
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1.  複製前端專案到本地：
 
-### `npm run build`
+    ```bash
+    git clone [https://github.com/Chun0122/accounting-app.git](https://github.com/Chun0122/accounting-app.git)
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2.  進入前端專案目錄：
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```bash
+    cd accounting-app
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3.  安裝相依套件：
 
-### `npm run eject`
+    ```bash
+    npm install
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4.  啟動開發伺服器：
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    ```bash
+    npm start
+    ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+5.  在瀏覽器中開啟 `http://localhost:3000`。
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 後端
 
-## Learn More
+1.  複製後端專案到本地：
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    ```bash
+    git clone [https://github.com/Chun0122/AccountingAppBackend.git](https://github.com/Chun0122/AccountingAppBackend.git)
+    ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2.  進入後端專案目錄：
 
-### Code Splitting
+    ```bash
+    cd AccountingAppBackend
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3.  安裝相依套件：
 
-### Analyzing the Bundle Size
+    ```bash
+    npm install
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4.  設定環境變數：
+    - 請設定資料庫連接資訊，和其他可能需要的環境變數。
+5.  啟動後端伺服器：
 
-### Making a Progressive Web App
+    ```bash
+    npm start
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+6.  後端伺服器預設運行在 `http://localhost:5000`。
 
-### Advanced Configuration
+## 專案結構
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **前端：**
+  - `src/`: 包含 React 應用程式的原始碼。
+  - `components/`: 包含可重用的 UI 元件。
+  - (請在此處補充其他相關前端資料夾)
+- **後端：**
+  - (請在此處補充後端資料夾結構說明)
+  - `routes/`: 包含 API 路由定義。
+  - `controllers/`: 包含 API 控制器邏輯。
+  - `models/`: 包含資料庫模型定義。
+  - (請在此處補充其他相關後端資料夾)
 
-### Deployment
+## API 說明
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- (請在此處提供 API 端點和請求/回應格式的說明)
 
-### `npm run build` fails to minify
+## 未來計劃
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- (請在此處列出您計劃在未來新增的功能或改進)
+
+## 貢獻
+
+歡迎任何形式的貢獻！如果您發現任何錯誤或有任何改進建議，請隨時提交 Pull Request 或 Issues。
+
+## 授權
+
+此專案使用 (請在此處補充您的授權類型) 授權。
+
+## 注意事項
+
+- 請確保您已安裝 Node.js 和 npm。
+- 在執行後端專案之前，請確保已正確設定資料庫連接資訊。
+- 如有任何問題，請隨時提出 Issue。
+
+希望這個 README.md 檔案對您有所幫助！
