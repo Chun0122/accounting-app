@@ -1,8 +1,11 @@
 // src/util/api/apiClient.js
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 export const createApiClient = (onUnauthorized) => {
   // 封裝 fetch 的基礎方法
-  const authFetch = async (url, options = {}) => {
+  const authFetch = async (path, options = {}) => {
     const token = localStorage.getItem("authToken");
+
+    const url = `${BASE_URL}${path}`;
 
     // 統一設定 headers
     const headers = {
@@ -12,7 +15,7 @@ export const createApiClient = (onUnauthorized) => {
     };
 
     try {
-      const response = await fetch(url, { ...options, headers });
+      const response = await fetch(path, { ...options, headers });
 
       // 處理非 200 狀態碼
       if (!response.ok) {
@@ -37,11 +40,11 @@ export const createApiClient = (onUnauthorized) => {
 
   // 返回封裝後的 API 方法
   return {
-    get: (url) => authFetch(url, { method: "GET" }),
-    post: (url, data) =>
-      authFetch(url, { method: "POST", body: JSON.stringify(data) }),
-    put: (url, data) =>
-      authFetch(url, { method: "PUT", body: JSON.stringify(data) }),
-    delete: (url) => authFetch(url, { method: "DELETE" }),
+    get: (path) => authFetch(path, { method: "GET" }),
+    post: (path, data) =>
+      authFetch(path, { method: "POST", body: JSON.stringify(data) }),
+    put: (path, data) =>
+      authFetch(path, { method: "PUT", body: JSON.stringify(data) }),
+    delete: (path) => authFetch(path, { method: "DELETE" }),
   };
 };
