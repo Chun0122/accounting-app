@@ -15,7 +15,7 @@ export const createApiClient = (onUnauthorized) => {
     };
 
     try {
-      const response = await fetch(path, { ...options, headers });
+      const response = await fetch(url, { ...options, headers });
 
       // 處理非 200 狀態碼
       if (!response.ok) {
