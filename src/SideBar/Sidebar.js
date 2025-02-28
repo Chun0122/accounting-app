@@ -26,24 +26,25 @@ function Sidebar() {
       icon: "fa fa-folder-open",
       path: "/categories",
     },
-    {
-      value: "subcategories",
-      label: "帳務子類別管理",
-      icon: "fa fa-tags",
-      path: "/subcategories",
-    },
-    {
-      value: "paymentMethods",
-      label: "付款方式管理",
-      icon: "fa fa-credit-card",
-      path: "/payment-methods",
-    },
-    {
-      value: "currencies",
-      label: "幣別管理",
-      icon: "fa fa-coins",
-      path: "/currencies",
-    },
+    // 之後補上
+    // {
+    //   value: "subcategories",
+    //   label: "帳務子類別管理",
+    //   icon: "fa fa-tags",
+    //   path: "/subcategories",
+    // },
+    // {
+    //   value: "paymentMethods",
+    //   label: "付款方式管理",
+    //   icon: "fa fa-credit-card",
+    //   path: "/payment-methods",
+    // },
+    // {
+    //   value: "currencies",
+    //   label: "幣別管理",
+    //   icon: "fa fa-coins",
+    //   path: "/currencies",
+    // },
   ];
 
   const handleLogout = () => {
