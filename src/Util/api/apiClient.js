@@ -1,5 +1,5 @@
 // src/util/api/apiClient.js
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://localhost:7258";
 export const createApiClient = (onUnauthorized) => {
   // 封裝 fetch 的基礎方法
   const authFetch = async (path, options = {}) => {

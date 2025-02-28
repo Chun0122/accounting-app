@@ -25,7 +25,9 @@ function Login() {
       password: password,
     };
 
-    fetch("/api/Auth/Login", {
+    const BASE_URL =
+      process.env.REACT_APP_API_BASE_URL || "https://localhost:7258";
+    fetch(`${BASE_URL}/api/Auth/Login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

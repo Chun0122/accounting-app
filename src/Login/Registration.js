@@ -42,7 +42,9 @@ function Registration() {
       //  其他註冊欄位
     };
 
-    fetch("/api/Auth/Register", {
+    const BASE_URL =
+      process.env.REACT_APP_API_BASE_URL || "https://localhost:7258";
+    fetch(`${BASE_URL}/api/Auth/Register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
